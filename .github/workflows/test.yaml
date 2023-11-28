@@ -32,6 +32,7 @@ jobs:
       # run Catlin linting
       - name: Run Catlin linting
         run: |
+          set -Eeu
           helm template task-oc . > task-oc.yml
           catlin validate task-oc.yml
 
