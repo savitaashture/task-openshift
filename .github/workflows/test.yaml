@@ -33,9 +33,9 @@ jobs:
       - name: Run Catlin linting
         run: |
           set -Eeu
-          helm template task-oc . > task-oc.yml
-          cat task-oc.yml
-          catlin validate ./task-oc.yml
+          helm template task-oc . > task-oc.yaml
+          cat task-oc.yaml
+          catlin validate task-oc.yaml
           echo "WAT!"
 
   test-e2e:
