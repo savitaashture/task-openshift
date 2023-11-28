@@ -34,9 +34,8 @@ jobs:
         run: |
           set -Eeu
           helm template task-oc . > task-oc.yml
-          catlin --help
-          catlin validate --help
           catlin validate ./task-oc.yml
+          echo "WAT!"
 
   test-e2e:
     strategy:
