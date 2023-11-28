@@ -34,6 +34,7 @@ jobs:
         run: |
           set -Eeu
           helm template task-oc . > task-oc.yml
+          cat task-oc.yml
           catlin validate ./task-oc.yml
           echo "WAT!"
 
