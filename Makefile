@@ -81,6 +81,10 @@ github-release: git-tag-release-version release
 install:
 	helm template $(CHART_NAME) . |kubectl $(ARGS) apply -f -
 
+# renders and removes the task in the current namespace
+remove:
+	helm template $(CHART_NAME) . |kubectl $(ARGS) delete -f -
+
 # packages the helm-chart as a single tarball, using it's name and version to compose the file
 helm-package:
 	rm -f $(CHART_NAME)-*.tgz || true
