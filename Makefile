@@ -5,10 +5,11 @@ OSP_VERSION ?= latest
 
 # using the chart name and version from chart's metadata
 CHART_NAME ?= $(shell awk '/^name:/ { print $$2 }' Chart.yaml)
-CHART_VESION ?= $(shell awk '/^version:/ { print $$2 }' Chart.yaml)
+CHART_VERSION ?= $(shell awk '/^version:/ { print $$2 }' Chart.yaml)
 RELEASE_VERSION = v$(CHART_VERSION)
 
-CATALOGCD_VERSION = v0.1.0
+# release directory where the Tekton resources are rendered into.
+RELEASE_DIR ?= /tmp/$(CHART_NAME)-$(CHART_VERSION)
 
 # bats entry point and default flags
 BATS_CORE = ./test/.bats/bats-core/bin/bats

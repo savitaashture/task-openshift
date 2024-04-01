@@ -26,7 +26,7 @@ extract_name() {
 # Finds the respective documentation for the task name
 find_doc() {
     declare task_name="${1}"
-    find docs/ -name "${task_name}*.md"
+    find docs/ -name "${task_name}.md"
 }
 
 #
