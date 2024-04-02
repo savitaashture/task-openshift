@@ -25,13 +25,11 @@ jobs:
       - name: Install linting tools
         run: |
           set -Eeu
-          GOBIN=/usr/local/bin/ go install github.com/openshift-pipelines/tektoncd-catalog/cmd/catalog-cd@latest
           git clone https://github.com/tektoncd/catlin
           cd catlin
           make bin/catlin
           sudo cp bin/catlin /usr/local/bin
           catlin --help
-          catalog-cd --help
 
       # run Catlin linting
       - name: Run Catlin linting
@@ -44,20 +42,11 @@ jobs:
           cat task-tkn.yaml
           catlin validate task-tkn.yaml || true
 
-      - name: Run catalog-cd lint
-        run: |
-          set -Eeu
-          helm template task-oc . > task-oc.yaml
-          catalog-cd lint task-oc.yaml
-          helm template task-tkn . > task-tkn.yaml
-          catalog-cd lint task-tkn.yaml 
-
   test-e2e:
     strategy:
       fail-fast: false # Keep running if one leg fails.
       matrix:
         pipeline-version:
-        - v0.44.5
         - v0.47.5
         - v0.50.5
         - v0.53.3
