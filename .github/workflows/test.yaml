@@ -21,7 +21,7 @@ jobs:
         with:
           submodules: true
 
-      # Install Catlin linting tool
+      # Install Catlin linting tool test
       - name: Install linting tools
         run: |
           set -Eeu
