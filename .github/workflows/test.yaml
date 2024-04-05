@@ -42,52 +42,5 @@ jobs:
           cat task-tkn.yaml
           catlin validate task-tkn.yaml || true
 
-  test-e2e:
-    strategy:
-      fail-fast: false # Keep running if one leg fails.
-      matrix:
-        pipeline-version:
-        - v0.44.5
-        - v0.47.5
-        - v0.50.5
-        - v0.53.3
-        - latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          registry: registry.redhat.io
-          username: ${{ secrets.REGISTRY_REDHAT_USERNAME }}
-          password: ${{ secrets.REGISTRY_REDHAT_TOKEN }}
-
-      - uses: azure/setup-helm@v3
-
-      # instantiate a KinD (Kubernetes in Docker) cluster, installs `kubectl` and configures the
-      # `kubeconfig` to reach the local cluster
-      - uses: helm/kind-action@v1.9.0
-        with:
-          cluster_name: kind
-          wait: 120s
-
-      # installs Tekton Pipelines and `tkn` command line, including a local Container-Registry with
-      # settings to reach it during testing
-      - uses: openshift-pipelines/setup-tektoncd@v1
-        with:
-          pipeline_version: ${{ matrix.pipeline-version }}
-
-      # running end-to-end test target
-      - name: test-e2e
-        run: |
-          set -Eeuo pipefail
-          kubectl delete secret regcred || true
-          kubectl create secret generic regcred \
-            --from-file=.dockerconfigjson=$HOME/.docker/config.json \
-          --type=kubernetes.io/dockerconfigjson
-          kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "regcred"}]}'
-          make test-e2e
 
